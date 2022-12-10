@@ -166,14 +166,3 @@ class Tree
     pretty_print(node.left, "#{prefix}#{is_left ? '    ' : '│   '}", true) if node.left
   end
 end
-
-## TESTING ##
-
-arr = *(1..7)
-tree = Tree.new(arr)
-tree.pretty_print
-tree.insert(8)
-tree.insert(9)
-tree.rebalance
-
-## ## ## ## ##

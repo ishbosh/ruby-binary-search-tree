@@ -135,7 +135,14 @@ class Tree
     height = 1 + (left_child_height > right_child_height ? left_child_height : right_child_height)
   end
 
-  def depth
+  def depth(root = @root, depth = 0, node)
+    node = find(node) if node.is_a?(Integer) # allows entering node OR data
+    return if node.nil?
+
+    return depth if root.eql?(node)
+    depth += 1
+    direction = node.data < root.data ? root.left : root.right
+    depth(direction, depth, node)
   end
 
   def balanced?
@@ -151,3 +158,9 @@ class Tree
     pretty_print(node.left, "#{prefix}#{is_left ? '    ' : '│   '}", true) if node.left
   end
 end
+
+arr = *(1..7)
+tree = Tree.new(arr)
+tree.pretty_print
+tree.depth(tree.find(3))
+tree.depth(tree.find(4))

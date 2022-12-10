@@ -89,13 +89,6 @@ class Tree
     level_order_rec(queue.first, queue, array, &block)
     array unless block_given?
   end
-  
-  # helper method for level_order and level_order_rec
-  def add_children_to_queue(queue, root)
-    queue << root.left unless root.left.nil?
-    queue << root.right unless root.right.nil?
-    queue
-  end
 
   # LDR
   def inorder(root = @root, array = [], &block)
@@ -170,4 +163,13 @@ class Tree
     pretty_print(node.left, "#{prefix}#{is_left ? '    ' : '│   '}", true) if node.left
   end
   # rubocop:enable Style/OptionalBooleanParameter
+
+  private
+
+  # helper method for level_order and level_order_rec
+  def add_children_to_queue(queue, root)
+    queue << root.left unless root.left.nil?
+    queue << root.right unless root.right.nil?
+    queue
+  end
 end

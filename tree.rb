@@ -2,6 +2,7 @@
 
 require_relative 'node'
 
+# Implements the class for Balanced Binary Search Trees
 class Tree
   def initialize(array)
     @array = array.uniq.sort
@@ -20,7 +21,7 @@ class Tree
     root
   end
 
-  def insert(root = @root, data)
+  def insert(data, root = @root)
     return root = Node.new(data) if root.nil?
 
     return root if root.data.eql?(data)
@@ -30,7 +31,7 @@ class Tree
     root
   end
 
-  def delete(root = @root, data)
+  def delete(data, root = @root)
     return root if root.nil?
 
     if data < root.data
@@ -40,14 +41,14 @@ class Tree
     else
       return root = root.left && root.right.nil? ? root.left : root.right
 
-      root.data = minValue(root.right)
+      root.data = min_value(root.right)
       root.right = delete(root.right, root.data)
     end
     root
   end
 
   # helper method for delete
-  def minValue(root)
+  def min_value(root)
     min = root.data
     until root.left.nil?
       min = root.left.data

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Implements the Node class for the binary search trees
 class Node
   include Comparable
 

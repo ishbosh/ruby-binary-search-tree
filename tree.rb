@@ -33,7 +33,28 @@ class Tree
   end
 
   def delete(root = @root, data)
+    return root if root.nil?
 
+    root.left = delete(root.left, data) if data < root.data
+    root.right = delete(root.right, data) if data > root.data
+    return nil if root.left.nil? && root.right.nil?
+
+    return root.left if root.left && root.right.nil?
+
+    return root.right if root.left.nil? && root.right
+    
+    root.data = minValue(root.right)
+    root.right = delete(root.right, root.data) 
+  end
+
+  # helper function for delete
+  def minValue(root)
+    min = root.data
+    until root.left.nil?
+      min = root.left.key
+      root = root.left
+    end
+    min
   end
 
   def find

@@ -42,16 +42,16 @@ class Tree
     return root.left if root.left && root.right.nil?
 
     return root.right if root.left.nil? && root.right
-    
+
     root.data = minValue(root.right)
     root.right = delete(root.right, root.data) 
   end
 
-  # helper function for delete
+  # helper method for delete
   def minValue(root)
     min = root.data
     until root.left.nil?
-      min = root.left.key
+      min = root.left.data
       root = root.left
     end
     min

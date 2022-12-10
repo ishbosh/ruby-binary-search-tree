@@ -1,14 +1,15 @@
 # frozen_string_literal: true
 
 require_relative 'node'
+require_relative 'helpers'
 
 # Implements the class for Balanced Binary Search Trees
 class Tree
+  include TreeHelpers
+
   def initialize(array)
     @array = array.uniq.sort
-    end_index = @array.length - 1
-    start_index = 0
-    @root = build_tree(@array, start_index, end_index)
+    @root = build_tree(@array, 0, @array.length - 1)
   end
 
   def build_tree(array, start_index, end_index)
@@ -34,27 +35,17 @@ class Tree
   def delete(data, root = @root)
     return root if root.nil?
 
-    if data < root.data # go down left tree
-      root.left = delete(data, root.left)
-    elsif data > root.data # go down right tree
-      root.right = delete(data, root.right)
-    else # this is the node to delete
-      return root = (root.left && root.right.nil? ? root.left : root.right) if root.left.nil? || root.right.nil?
+    if data.eql?(root.data)
+      return node.left if node.right.nil?
 
-      root.data = min_value(root.right)
+      return node.right if node.left.nil?
+
+      root.data = left_leaf_node(root.right).data
       root.right = delete(root.data, root.right)
+    else
+      data < root.data ? root.left = delete(data, root.left) : root.right = delete(data, root.right)
     end
     root
-  end
-
-  # helper method for delete
-  def min_value(root)
-    min = root.data
-    until root.left.nil?
-      min = root.left.data
-      root = root.left
-    end
-    min
   end
 
   def find(data, root = @root)
@@ -66,10 +57,9 @@ class Tree
   end
 
   # iterative level order method
-  def level_order(root = @root)
+  def level_order(root = @root, array = [])
     return if root.nil?
 
-    array = []
     queue = [root]
     until queue.empty?
       queue = add_children_to_queue(queue, root)
@@ -150,26 +140,6 @@ class Tree
 
   def rebalance
     array = inorder
-    start_index = 0
-    end_index = array.length - 1
-    @root = build_tree(array, start_index, end_index)
-  end
-
-  # Pretty print method to visualize binary search tree
-  # rubocop:disable Style/OptionalBooleanParameter
-  def pretty_print(node = @root, prefix = '', is_left = true)
-    pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right
-    puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.data}"
-    pretty_print(node.left, "#{prefix}#{is_left ? '    ' : '│   '}", true) if node.left
-  end
-  # rubocop:enable Style/OptionalBooleanParameter
-
-  private
-
-  # helper method for level_order and level_order_rec
-  def add_children_to_queue(queue, root)
-    queue << root.left unless root.left.nil?
-    queue << root.right unless root.right.nil?
-    queue
+    @root = build_tree(array, 0, array.length - 1)
   end
 end

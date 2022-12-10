@@ -35,16 +35,16 @@ class Tree
   def delete(root = @root, data)
     return root if root.nil?
 
-    root.left = delete(root.left, data) if data < root.data
-    root.right = delete(root.right, data) if data > root.data
-    return nil if root.left.nil? && root.right.nil?
-
-    return root.left if root.left && root.right.nil?
-
-    return root.right if root.left.nil? && root.right
-
-    root.data = minValue(root.right)
-    root.right = delete(root.right, root.data) 
+    if data < root.data
+      root.left = delete(root.left, data) 
+    elsif data > root.data
+      root.right = delete(root.right, data) 
+    else
+      return root = root.left && root.right.nil? ? root.left : root.right
+ 
+      root.data = minValue(root.right)
+      root.right = delete(root.right, root.data) 
+    end
     root
   end
 

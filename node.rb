@@ -8,4 +8,9 @@ class Node
     @left = left
     @right = right
   end
+
+  # Comparable module implementation
+  def <=>(other)
+    data <=> other
+  end
 end

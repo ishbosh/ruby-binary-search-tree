@@ -34,13 +34,13 @@ class Tree
   def delete(data, root = @root)
     return root if root.nil?
 
-    if data < root.data
+    if data < root.data # go down left tree
       root.left = delete(root.left, data)
-    elsif data > root.data
+    elsif data > root.data # go down right tree
       root.right = delete(root.right, data)
-    else
-      return root = root.left && root.right.nil? ? root.left : root.right
-
+    else # this is the node to delete
+      return root = (root.left && root.right.nil? ? root.left : root.right)
+      ## BUG
       root.data = min_value(root.right)
       root.right = delete(root.right, root.data)
     end
@@ -70,25 +70,25 @@ class Tree
     return if root.nil?
 
     array = []
-    q = [root]
-    until q.empty?
-      q << q.first.left unless q.first.left.nil?
-      q << q.first.right unless q.first.right.nil?
-      yield q.shift if block_given?
-      array << q.shift.data unless block_given?
+    queue = [root]
+    until queue.empty?
+      queue << queue.first.left unless queue.first.left.nil?
+      queue << queue.first.right unless queue.first.right.nil?
+      yield queue.first if block_given?
+      array << queue.shift.data
     end
     array unless block_given?
   end
 
   # recursive level order method
-  def level_order_rec(root = @root, q = [@root], array = [], &block)
+  def level_order_rec(root = @root, queue = [@root], array = [], &block)
     return if root.nil?
 
-    block.call(q.shift) if block_given?
-    array << q.shift.data unless block_given?
-    q << root.left unless root.left.nil?
-    q << root.right unless root.right.nil?
-    level_order_rec(q.first, q, array, &block)
+    block.call(queue.shift) if block_given?
+    array << queue.shift.data
+    queue << root.left unless root.left.nil?
+    queue << root.right unless root.right.nil?
+    level_order_rec(queue.first, queue, array, &block)
     array unless block_given?
   end
 
@@ -125,7 +125,6 @@ class Tree
   end
 
   def height(node)
-    node = find(node) if node.is_a?(Integer) # allows entering node OR data
     return if node.nil?
 
     return 0 if node.left.nil? && node.right.nil?
@@ -136,14 +135,13 @@ class Tree
   end
 
   def depth(node, root = @root, depth = 0)
-    node = find(node) if node.is_a?(Integer) # allows entering node OR data
     return if node.nil?
 
     return depth if root.eql?(node)
 
     depth += 1
-    direction = node.data < root.data ? root.left : root.right
-    depth(direction, depth, node)
+    child_node = node.data < root.data ? root.left : root.right
+    depth(child_node, depth, node)
   end
 
   def balanced?

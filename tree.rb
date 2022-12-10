@@ -72,8 +72,7 @@ class Tree
     array = []
     queue = [root]
     until queue.empty?
-      queue << queue.first.left unless queue.first.left.nil?
-      queue << queue.first.right unless queue.first.right.nil?
+      queue = add_children_to_queue(queue, root)
       yield queue.first if block_given?
       array << queue.shift.data
     end
@@ -86,10 +85,16 @@ class Tree
 
     block.call(queue.shift) if block_given?
     array << queue.shift.data
-    queue << root.left unless root.left.nil?
-    queue << root.right unless root.right.nil?
+    queue = add_children_to_queue(queue, root)
     level_order_rec(queue.first, queue, array, &block)
     array unless block_given?
+  end
+  
+  # helper method for level_order and level_order_rec
+  def add_children_to_queue(queue, root)
+    queue << root.left unless root.left.nil?
+    queue << root.right unless root.right.nil?
+    queue
   end
 
   # LDR

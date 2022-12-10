@@ -125,7 +125,14 @@ class Tree
     array << root.data unless block_given?
   end
 
-  def height
+  def height(node)
+    return if node.nil?
+
+    return 0 if node.left.nil? && node.right.nil?
+
+    left_child_height = height(node.left)
+    right_child_height = height(node.right)
+    height = 1 + (left_child_height > right_child_height ? left_child_height : right_child_height)
   end
 
   def depth

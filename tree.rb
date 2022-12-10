@@ -58,7 +58,12 @@ class Tree
     min
   end
 
-  def find
+  def find(root = @root, data)
+    return root if root.nil? || root.data.eql?(data)
+
+    return find(root.left, data) if data < root.data
+    
+    find(root.right, data)
   end
 
   def level_order

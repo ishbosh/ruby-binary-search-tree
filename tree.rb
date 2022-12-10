@@ -126,12 +126,13 @@ class Tree
   end
 
   def height(node)
+    node = find(node) if node.is_a?(Integer) # allows entering node OR data
     return if node.nil?
 
     return 0 if node.left.nil? && node.right.nil?
 
-    left_child_height = height(node.left)
-    right_child_height = height(node.right)
+    left_child_height = node.left.nil? ? 0 : height(node.left)
+    right_child_height = node.right.nil? ? 0 : height(node.right)
     height = 1 + (left_child_height > right_child_height ? left_child_height : right_child_height)
   end
 
@@ -146,6 +147,9 @@ class Tree
   end
 
   def balanced?
+    return true if @root.nil? || (root.left.nil? && root.right.nil?)
+
+    height(@root.left) 
   end
 
   def rebalance

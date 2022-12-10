@@ -45,6 +45,7 @@ class Tree
 
     root.data = minValue(root.right)
     root.right = delete(root.right, root.data) 
+    root
   end
 
   # helper method for delete

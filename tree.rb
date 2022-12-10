@@ -21,4 +21,44 @@ class Tree
     # Return the level-0 root node
     root
   end
+
+  def insert
+  end
+
+  def delete
+  end
+
+  def find
+  end
+
+  def level_order
+  end
+
+  def inorder
+  end
+
+  def preorder
+  end
+
+  def postorder
+  end
+
+  def height
+  end
+
+  def depth
+  end
+
+  def balanced?
+  end
+
+  def rebalance
+  end
+
+  # Pretty print method to visualize binary search tree
+  def pretty_print(node = @root, prefix = '', is_left = true)
+    pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right
+    puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.data}"
+    pretty_print(node.left, "#{prefix}#{is_left ? '    ' : '│   '}", true) if node.left
+  end
 end

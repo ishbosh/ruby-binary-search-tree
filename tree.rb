@@ -146,11 +146,11 @@ class Tree
     depth(direction, depth, node)
   end
 
-  def balanced?
-    return true if @root.nil? || (root.left.nil? && root.right.nil?)
+  # def balanced?
+  #   return true if @root.nil? || (root.left.nil? && root.right.nil?)
 
-    height(@root.left) 
-  end
+  #   height(@root.left) 
+  # end
 
   def rebalance
   end

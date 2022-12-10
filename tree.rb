@@ -146,11 +146,11 @@ class Tree
     depth(direction, depth, node)
   end
 
-  # def balanced?
-  #   return true if @root.nil? || (root.left.nil? && root.right.nil?)
+  def balanced?
+    return true if @root.nil? || (@root.left.nil? && @root.right.nil?)
 
-  #   height(@root.left) 
-  # end
+    (height(@root.left) - height(@root.right)).abs > 1 ? false : true
+  end
 
   def rebalance
   end
@@ -163,8 +163,10 @@ class Tree
   end
 end
 
+## TESTING ##
+
 arr = *(1..7)
 tree = Tree.new(arr)
 tree.pretty_print
-tree.depth(tree.find(3))
-tree.depth(tree.find(4))
+
+## ## ## ## ##

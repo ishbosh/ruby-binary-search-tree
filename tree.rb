@@ -60,9 +60,9 @@ class Tree
   def find(data, root = @root)
     return root if root.nil? || root.data.eql?(data)
 
-    return find(root.left, data) if data < root.data
+    return find(data, root.left) if data < root.data
 
-    find(root.right, data)
+    find(data, root.right)
   end
 
   # iterative level order method

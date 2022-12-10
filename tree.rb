@@ -15,9 +15,9 @@ class Tree
     mid_index = (start_index + end_index) / 2
     root = Node.new(array[mid_index])
     # set the left node equal to build_tree(array, start, mid-1)
-    root.left = build_tree(@array, start_index, mid_index - 1)
+    root.left = build_tree(array, start_index, mid_index - 1)
     # set the right node equal to build_tree(array, mid+1, end)
-    root.right = build_tree(@array, mid_index + 1, end_index)
+    root.right = build_tree(array, mid_index + 1, end_index)
     # Return the level-0 root node
     root
   end
@@ -153,6 +153,10 @@ class Tree
   end
 
   def rebalance
+    array = inorder
+    start_index = 0
+    end_index = array.length - 1
+    @root = build_tree(array, start_index, end_index)
   end
 
   # Pretty print method to visualize binary search tree
@@ -168,5 +172,8 @@ end
 arr = *(1..7)
 tree = Tree.new(arr)
 tree.pretty_print
+tree.insert(8)
+tree.insert(9)
+tree.rebalance
 
 ## ## ## ## ##

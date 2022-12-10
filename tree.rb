@@ -93,13 +93,21 @@ class Tree
     array unless block_given?
   end
 
-  def inorder
+  def inorder(root = @root, array = [], &block)
+    #LDR
+    inorder(root.left, array, &block) unless root.left.nil?
+    block.call(root) if block_given?
+    array << root.data unless block_given?
+    inorder(root.right, array, &block) unless root.right.nil?
+    array unless block_given?
   end
 
   def preorder
+    #DLR
   end
 
   def postorder
+    #LRD
   end
 
   def height

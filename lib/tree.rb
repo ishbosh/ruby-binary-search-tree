@@ -61,7 +61,7 @@ class Tree
     return if root.nil?
 
     until queue.empty?
-      queue = add_children_to_queue(queue, root)
+      queue = add_children_to_queue(queue, queue.first)
       yield queue.first if block_given?
       array << queue.shift.data
     end

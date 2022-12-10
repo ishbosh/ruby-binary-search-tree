@@ -26,8 +26,8 @@ class Tree
 
     return root if root.data.eql?(data)
 
-    root.left = insert(root.left, data) if data < root.data
-    root.right = insert(root.right, data) if data > root.data
+    root.left = insert(data, root.left) if data < root.data
+    root.right = insert(data, root.right) if data > root.data
     root
   end
 
@@ -35,14 +35,14 @@ class Tree
     return root if root.nil?
 
     if data < root.data # go down left tree
-      root.left = delete(root.left, data)
+      root.left = delete(data, root.left)
     elsif data > root.data # go down right tree
-      root.right = delete(root.right, data)
+      root.right = delete(data, root.right)
     else # this is the node to delete
-      return root = (root.left && root.right.nil? ? root.left : root.right)
-      ## BUG
+      return root = (root.left && root.right.nil? ? root.left : root.right) if root.left.nil? || root.right.nil?
+
       root.data = min_value(root.right)
-      root.right = delete(root.right, root.data)
+      root.right = delete(root.data, root.right)
     end
     root
   end

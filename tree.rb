@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'node'
 
 class Tree
@@ -32,14 +34,14 @@ class Tree
     return root if root.nil?
 
     if data < root.data
-      root.left = delete(root.left, data) 
+      root.left = delete(root.left, data)
     elsif data > root.data
-      root.right = delete(root.right, data) 
+      root.right = delete(root.right, data)
     else
       return root = root.left && root.right.nil? ? root.left : root.right
- 
+
       root.data = minValue(root.right)
-      root.right = delete(root.right, root.data) 
+      root.right = delete(root.right, root.data)
     end
     root
   end
@@ -54,11 +56,11 @@ class Tree
     min
   end
 
-  def find(root = @root, data)
+  def find(data, root = @root)
     return root if root.nil? || root.data.eql?(data)
 
     return find(root.left, data) if data < root.data
-    
+
     find(root.right, data)
   end
 
@@ -103,9 +105,9 @@ class Tree
   # DLR
   def preorder(root = @root, array = [], &block)
     return if root.nil?
-    
+
     block.call(root) if block_given?
-    array << root.data unless block_given? 
+    array << root.data unless block_given?
     preorder(root.left, array, &block) unless root.left.nil?
     preorder(root.right, array, &block) unless root.right.nil?
     array unless block_given?
@@ -129,14 +131,15 @@ class Tree
 
     left_child_height = node.left.nil? ? 0 : height(node.left)
     right_child_height = node.right.nil? ? 0 : height(node.right)
-    height = 1 + (left_child_height > right_child_height ? left_child_height : right_child_height)
+    (left_child_height > right_child_height ? left_child_height : right_child_height) + 1
   end
 
-  def depth(root = @root, depth = 0, node)
+  def depth(node, root = @root, depth = 0)
     node = find(node) if node.is_a?(Integer) # allows entering node OR data
     return if node.nil?
 
     return depth if root.eql?(node)
+
     depth += 1
     direction = node.data < root.data ? root.left : root.right
     depth(direction, depth, node)
@@ -145,7 +148,7 @@ class Tree
   def balanced?
     return true if @root.nil? || (@root.left.nil? && @root.right.nil?)
 
-    (height(@root.left) - height(@root.right)).abs > 1 ? false : true
+    (height(@root.left) - height(@root.right)).abs <= 1
   end
 
   def rebalance
@@ -156,9 +159,11 @@ class Tree
   end
 
   # Pretty print method to visualize binary search tree
+  # rubocop:disable Style/OptionalBooleanParameter
   def pretty_print(node = @root, prefix = '', is_left = true)
     pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right
     puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.data}"
     pretty_print(node.left, "#{prefix}#{is_left ? '    ' : '│   '}", true) if node.left
   end
+  # rubocop:enable Style/OptionalBooleanParameter
 end

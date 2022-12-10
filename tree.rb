@@ -22,10 +22,18 @@ class Tree
     root
   end
 
-  def insert
+  def insert(root = @root, data)
+    return root = Node.new(data) if root.nil?
+
+    return root if root.data.eql?(data)
+
+    root.left = insert(root.left, data) if data < root.data
+    root.right = insert(root.right, data) if data > root.data
+    root
   end
 
-  def delete
+  def delete(root = @root, data)
+
   end
 
   def find

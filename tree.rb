@@ -140,8 +140,8 @@ class Tree
     return depth if root.eql?(node)
 
     depth += 1
-    child_node = node.data < root.data ? root.left : root.right
-    depth(child_node, depth, node)
+    child_root = node.data < root.data ? root.left : root.right
+    depth(node, child_root, depth)
   end
 
   def balanced?

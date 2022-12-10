@@ -66,7 +66,31 @@ class Tree
     find(root.right, data)
   end
 
-  def level_order
+  # iterative level order method
+  def level_order(root = @root)
+    return if root.nil?
+
+    array = []
+    q = [root]
+    until q.empty?
+      q << q.first.left unless q.first.left.nil?
+      q << q.first.right unless q.first.right.nil?
+      yield q.shift if block_given?
+      array << q.shift.data unless block_given?
+    end
+    array unless block_given?
+  end
+
+  # recursive level order method
+  def level_order_rec(root = @root, q = [@root], array = [], &block)
+    return if root.nil?
+
+    block.call(q.shift) if block_given?
+    array << q.shift.data unless block_given?
+    q << root.left unless root.left.nil?
+    q << root.right unless root.right.nil?
+    level_order_rec(q.first, q, array, &block)
+    array unless block_given?
   end
 
   def inorder
